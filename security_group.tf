@@ -34,20 +34,3 @@ resource "aws_vpc_security_group_egress_rule" "db" {
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
-
-# Egress
-resource "aws_security_group" "egress" {
-  name        = "${var.project_name}-egress-sg"
-  description = "Security Group for Egress"
-  vpc_id      = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.project_name}-egress-sg"
-  }
-}
-
-resource "aws_vpc_security_group_egress_rule" "egress" {
-  security_group_id = aws_security_group.egress.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1"
-}
