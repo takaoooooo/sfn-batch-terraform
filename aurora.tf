@@ -16,7 +16,6 @@ resource "aws_rds_cluster" "main" {
   engine               = "aurora-postgresql"
   engine_mode          = "provisioned"
   engine_version       = "17.4"
-  availability_zones   = ["ap-northeast-1a"]
   db_subnet_group_name = aws_db_subnet_group.main.name
   database_name        = "app"
   master_username      = "sfnbatch"
@@ -43,4 +42,5 @@ resource "aws_rds_cluster_instance" "main" {
   instance_class     = "db.serverless"
   engine             = aws_rds_cluster.main.engine
   engine_version     = aws_rds_cluster.main.engine_version
+  availability_zone  = "ap-northeast-1a"
 }
