@@ -26,8 +26,8 @@ resource "aws_rds_cluster" "main" {
   vpc_security_group_ids      = [aws_security_group.db.id]
   # 最終スナップショットをスキップ有効化
   skip_final_snapshot = true
-  # 削除保護を有効化
-  deletion_protection = true
+  # 削除保護を一時的に無効化(1AZ構成での作り直しのため)
+  deletion_protection = false
   # RDS Data APIを有効化
   enable_http_endpoint = true
 
