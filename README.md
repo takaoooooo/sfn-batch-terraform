@@ -4,6 +4,9 @@
 
 - ルート直下: VPC・サブネット・セキュリティグループ・bastion(EC2 + SSM)・Aurora Serverless v2・ECRを管理(1つのstate)
 - [vpc_endpoint/](vpc_endpoint/): ECR API/DKR・S3のVPCエンドポイントを**別state**で管理。Interfaceエンドポイントは時間課金のため、検証時以外は削除しておく運用とする
+- 構成図: [docs/architecture.drawio](docs/architecture.drawio)([draw.io](https://app.diagrams.net/?splash=0&libs=aws4)で開ける。AWS公式アイコンで作成)
+
+![構成図](docs/architecture.png)
 
 ## 前提ツール
 
