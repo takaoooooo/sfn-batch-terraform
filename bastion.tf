@@ -42,6 +42,40 @@ resource "aws_iam_role_policy_attachment" "bastion_ecr" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
+# ECRへのpushを許可(app_reservation/app_notificationリポジトリのみ)
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy
+resource "aws_iam_role_policy" "bastion_ecr_push" {
+  name = "${var.project_name}-bastion-ecr-push-policy"
+  role = aws_iam_role.bastion_ssm.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "EcrAuthToken"
+        Effect   = "Allow"
+        Action   = "ecr:GetAuthorizationToken"
+        Resource = "*"
+      },
+      {
+        Sid    = "EcrPush"
+        Effect = "Allow"
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:PutImage",
+        ]
+        Resource = [
+          aws_ecr_repository.app_reservation.arn,
+          aws_ecr_repository.app_notification.arn,
+        ]
+      },
+    ]
+  })
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile
 resource "aws_iam_instance_profile" "bastion_ssm" {
   name = "${var.project_name}-bastion-ssm-profile"
