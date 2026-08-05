@@ -1,18 +1,24 @@
 version: 2.1
 
-jobs:
-  say-hello:
-    docker:
-      - image: cimg/base:current
+orbs:
+  ecspresso: fujiwara/ecspresso@2.0.4
 
+jobs:
+  update_notification_ecs_task:
+    docker:
+        - image: cimg/base:stable
     steps:
       - checkout
+      - ecspresso/install:
+          version: v2.8.5
+          os: linux
+          arch: amd64
+      # TODO: OIDC認証を入れる
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          command: |
+            ecspresso version
 
 workflows:
-  say-hello-workflow: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  update-ecs-task:
     jobs:
-      - say-hello
+      - update_notification_ecs_task
