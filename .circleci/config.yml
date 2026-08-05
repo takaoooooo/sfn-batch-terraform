@@ -5,7 +5,7 @@ orbs:
   aws-cli: circleci/aws-cli@5.4.2
 
 jobs:
-  update_notification_ecs_task:
+  update_ecs_task:
     docker:
         - image: cimg/base:stable
     steps:
@@ -19,13 +19,23 @@ jobs:
           role_arn: arn:aws:iam::786832920677:role/CircleCIRole
           role_session_name: deploy-session
       - run:
+          name: ecspresso diff(notification)
+          command: |
+            ecspresso diff --without-service --config  ecspresso/notification/ecspresso.yml
+      - run:
+          name: ecspresso register(notification)
+          command: |
+            ecspresso register --config  ecspresso/notification/ecspresso.yml
+      - run:
+          name: ecspresso diff(reservation)
           command: |
             ecspresso diff --without-service --config  ecspresso/reservation/ecspresso.yml
       - run:
+          name: ecspresso register(reservation)
           command: |
             ecspresso register --config  ecspresso/reservation/ecspresso.yml
 
 workflows:
   update-ecs-task:
     jobs:
-      - update_notification_ecs_task
+      - update_ecs_task
