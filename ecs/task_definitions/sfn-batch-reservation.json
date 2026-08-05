@@ -1,0 +1,117 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-1:786832920677:task-definition/sfn-batch-reservation:1",
+    "containerDefinitions": [
+        {
+            "name": "batch",
+            "image": "786832920677.dkr.ecr.ap-northeast-1.amazonaws.com/sfn-batch-app-reservation:v1",
+            "cpu": 0,
+            "memoryReservation": 512,
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "name": "batch-80-tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DB_NAME",
+                    "value": "app"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DB_HOST",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:786832920677:secret:rds-db-credentials/cluster-ABP2I4HWE2GFU6Y6M2PLTMBURI/sfnbatchuser/1785666010527-jHVfV2:host::"
+                },
+                {
+                    "name": "DB_USERNAME",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:786832920677:secret:rds-db-credentials/cluster-ABP2I4HWE2GFU6Y6M2PLTMBURI/sfnbatchuser/1785666010527-jHVfV2:username::"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:786832920677:secret:rds-db-credentials/cluster-ABP2I4HWE2GFU6Y6M2PLTMBURI/sfnbatchuser/1785666010527-jHVfV2:password::"
+                }
+            ],
+            "readonlyRootFilesystem": true,
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/sfn-batch-reservation",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "sfn-batch-reservation",
+    "executionRoleArn": "arn:aws:iam::786832920677:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 1,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "MANAGED_INSTANCES",
+        "FARGATE"
+    ],
+    "runtimePlatform": {
+        "cpuArchitecture": "ARM64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "registeredAt": "2026-08-04T11:11:40.104Z",
+    "registeredBy": "arn:aws:iam::786832920677:user/admin",
+    "enableFaultInjection": false,
+    "tags": []
+}
