@@ -96,4 +96,9 @@ resource "aws_instance" "bastion" {
   tags = {
     Name = "${var.project_name}-bastion"
   }
+
+  # 最新のAMI取得により意図しない再作成を防ぐ
+  lifecycle {
+    ignore_changes = [ami]
+  }
 }
