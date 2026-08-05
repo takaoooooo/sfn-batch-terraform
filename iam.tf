@@ -1,6 +1,7 @@
 # OIDC認証(CircleCI)
 locals {
   circleci_organization_id = "a431a6ad-8b25-476b-a8cf-9b09e27b95de"
+  circleci_project_id      = "43942238-78ae-4ea5-8db5-5dcda8dbcdc4"
 }
 
 data "tls_certificate" "cirlceci" {
@@ -8,8 +9,8 @@ data "tls_certificate" "cirlceci" {
 }
 
 resource "aws_iam_openid_connect_provider" "circleci" {
-  url             = "https://oidc.circleci.com/org/${local.circleci_organization_id}"
-  client_id_list  = [local.circleci_organization_id]
+  url            = "https://oidc.circleci.com/org/${local.circleci_organization_id}"
+  client_id_list = [local.circleci_organization_id]
   # サムプリントの計算
   thumbprint_list = data.tls_certificate.cirlceci.certificates.*.sha1_fingerprint
 }
@@ -25,6 +26,11 @@ resource "aws_iam_role" "cirlcleci_role" {
       Principal = {
         Federated = aws_iam_openid_connect_provider.circleci.arn
       }
+      Condition = {
+        StringLike = {
+          "oidc.circleci.com/org/${local.circleci_organization_id}:sub" = "org/${local.circleci_organization_id}/project/${local.circleci_project_id}/user/*"
+        }
+      }
     }]
   })
 }
@@ -34,7 +40,7 @@ resource "aws_iam_role" "cirlcleci_role" {
 resource "aws_iam_policy" "circleci" {
   name        = "${var.project_name}-circleci"
   description = "for CircleCI Policy"
-    policy = jsonencode({
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
@@ -53,8 +59,12 @@ resource "aws_iam_policy" "circleci" {
           "iam:PassRole"
         ]
         Effect   = "Allow"
-        # TODO:タスクロールとタスク実行ロールで絞る
-        Resource = "*"
+        Resource = "arn:aws:iam::786832920677:role/ecsTaskExecutionRole"
+        Condition = {
+          StringEquals = {
+            "iam:PassedToService" = "ecs-tasks.amazonaws.com"
+          }
+        }
       }
     ]
   })
