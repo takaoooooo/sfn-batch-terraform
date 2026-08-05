@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   ecspresso: fujiwara/ecspresso@2.0.4
+  aws-cli: circleci/aws-cli@5.4.2
 
 jobs:
   update_notification_ecs_task:
@@ -13,10 +14,16 @@ jobs:
           version: v2.8.5
           os: linux
           arch: amd64
-      # TODO: OIDC認証を入れる
+      - aws-cli/setup:
+          profile_name: WEB IDENTITY PROFILE
+          role_arn: arn:aws:iam::786832920677:role/CircleCIRole
+          role_session_name: deploy-session
       - run:
           command: |
-            ecspresso version
+            ecspresso diff --without-service --config  ecspresso/reservation/ecspresso.yml
+      - run:
+          command: |
+            ecspresso register  --without-service --config  ecspresso/reservation/ecspresso.yml
 
 workflows:
   update-ecs-task:
