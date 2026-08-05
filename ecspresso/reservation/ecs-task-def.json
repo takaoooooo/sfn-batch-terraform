@@ -105,7 +105,6 @@
     ],
     "cpu": "512",
     "memory": "1024",
-    "registeredAt": "2026-08-04T11:11:40.104Z",
     "registeredBy": "arn:aws:iam::786832920677:user/admin",
     "enableFaultInjection": false,
     "tags": []
