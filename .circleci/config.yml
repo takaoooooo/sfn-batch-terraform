@@ -23,7 +23,7 @@ jobs:
             ecspresso diff --without-service --config  ecspresso/reservation/ecspresso.yml
       - run:
           command: |
-            ecspresso register  --without-service --config  ecspresso/reservation/ecspresso.yml
+            ecspresso register --config  ecspresso/reservation/ecspresso.yml
 
 workflows:
   update-ecs-task:
