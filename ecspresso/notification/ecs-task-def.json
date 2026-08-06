@@ -38,7 +38,6 @@
     "family": "sfn-batch-notification",
     "executionRoleArn": "arn:aws:iam::786832920677:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 1,
     "volumes": [],
     "status": "ACTIVE",
     "placementConstraints": [],
