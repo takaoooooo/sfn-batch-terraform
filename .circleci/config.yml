@@ -61,6 +61,6 @@ workflows:
   update-ecs-task:
     jobs:
       - push_ecr
-      - update_ecs_task
+      - update_ecs_task:
           requires:
-            push_ecr
+            - push_ecr
