@@ -34,9 +34,9 @@ jobs:
          name: Build and Push reservation Image
          command: |
             cd sbcntr-batch
-            docker buildx build -t sbcntr-batch-app-reservation -f ./deployments/docker/Dockerfile.reservation .
-            docker image tag sbcntr-batch-app-reservation:latest 786832920677.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-batch-app-reservation:v1
-            docker image push 786832920677.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-batch-app-reservation:v1
+            docker buildx build -t sfn-batch-app-reservation -f ./deployments/docker/Dockerfile.reservation .
+            docker image tag sfn-batch-app-reservation:latest 786832920677.dkr.ecr.ap-northeast-1.amazonaws.com/sfn-batch-app-reservation:v1
+            docker image push 786832920677.dkr.ecr.ap-northeast-1.amazonaws.com/sfn-batch-app-reservation:v1
   update_ecs_task:
     docker:
         - image: cimg/base:stable
