@@ -14,6 +14,12 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - run:
+          name: Git clone
+          command: |
+            git clone https:github.com/uma-arai/sbcntr-batch.git
+            cd sbcntr-batch
+            git fetch; git switch v2
       - aws-cli/setup:
          profile_name: WEB IDENTITY PROFILE
          role_arn: arn:aws:iam::786832920677:role/CircleCIRole
