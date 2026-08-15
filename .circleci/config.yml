@@ -9,6 +9,24 @@ orbs:
 # - reservation/notificationそれぞれのDockerfileをbuildし、タグ付けしてpushする(タグ戦略は要検討: latest固定 or $CIRCLE_SHA1 等)
 # - 追加後はworkflows.update-ecs-task.jobsにも組み込み、update_ecs_taskより先に実行されるようにする
 jobs:
+  push_ecr:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - aws-cli/setup:
+         profile_name: WEB IDENTITY PROFILE
+         role_arn: arn:aws:iam::786832920677:role/CircleCIRole
+         role_session_name: push-ecr-session
+      - run:
+         name: ECR login
+         command: |
+           aws ecr get-login-password --region ap-northeast-1 \
+            | docker login --username AWS --password-stdin 786832920677.dkr.ecr.ap-northeast-1.amazonaws.com
+      - run: 
+         name: Build and Push Images
+         command: |
+            echo "Build and Push Images" 
   update_ecs_task:
     docker:
         - image: cimg/base:stable
@@ -42,4 +60,7 @@ jobs:
 workflows:
   update-ecs-task:
     jobs:
+      - push_ecr
       - update_ecs_task
+          requires:
+            push_ecr
