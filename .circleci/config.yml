@@ -4,6 +4,10 @@ orbs:
   ecspresso: fujiwara/ecspresso@2.0.4
   aws-cli: circleci/aws-cli@5.4.2
 
+# TODO: CircleCIからECRへイメージをbuild & pushするジョブ(push_ecr)を追加する
+# - checkout, setup_remote_docker, aws-cli/setup(CircleCIRoleをassume)でECR loginまで用意する
+# - reservation/notificationそれぞれのDockerfileをbuildし、タグ付けしてpushする(タグ戦略は要検討: latest固定 or $CIRCLE_SHA1 等)
+# - 追加後はworkflows.update-ecs-task.jobsにも組み込み、update_ecs_taskより先に実行されるようにする
 jobs:
   update_ecs_task:
     docker:

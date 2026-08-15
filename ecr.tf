@@ -13,7 +13,7 @@ resource "aws_ecr_repository" "app_reservation" {
 # 通知登録バッチ用リポジトリ
 # デフォルトでAES256で暗号化
 resource "aws_ecr_repository" "app_notification" {
-  name                 = "${var.project_name}-app-notification"
+  name = "${var.project_name}-app-notification"
   # 上書き可能
   image_tag_mutability = "MUTABLE"
 
