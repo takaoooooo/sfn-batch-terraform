@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Git clone
           command: |
-            git clone https:github.com/uma-arai/sbcntr-batch.git
+            git clone https://github.com/uma-arai/sbcntr-batch.git
             cd sbcntr-batch
             git fetch; git switch v2
       - aws-cli/setup:
