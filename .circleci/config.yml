@@ -40,6 +40,7 @@ jobs:
       - run:
          name: Build and Push notification Image
          command: |
+            cd sbcntr-batch
             docker buildx build -t sfn-batch-app-notification -f ./deployments/docker/Dockerfile.notification .
             docker image tag sfn-batch-app-notification:latest 786832920677.dkr.ecr.ap-northeast-1.amazonaws.com/sfn-batch-app-notification:v1
             docker image push 786832920677.dkr.ecr.ap-northeast-1.amazonaws.com/sfn-batch-app-notification:v1
