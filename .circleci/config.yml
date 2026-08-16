@@ -14,7 +14,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_cach1ing: true
       - run:
           name: Git clone
           command: |
