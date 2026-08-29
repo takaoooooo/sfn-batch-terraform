@@ -1,0 +1,27 @@
+name: Claude Daily Digest to Slack
+
+on:
+  schedule:
+    # 00:00 UTC = 09:00 JST daily
+    - cron: "0 0 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore last-seen version state
+        uses: actions/cache@v4
+        with:
+          path: .claude-digest-state
+          key: claude-digest-state-${{ github.run_id }}
+          restore-keys: |
+            claude-digest-state-
+
+      - name: Fetch changelog and post digest to Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: bash scripts/claude_daily_digest.sh
+
