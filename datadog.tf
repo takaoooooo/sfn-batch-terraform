@@ -22,7 +22,7 @@ variable "datadog_secret_id" {
 variable "datadog_site" {
   description = "Datadog Site (datadoghq.com / datadoghq.eu / us3.datadoghq.com など)"
   type        = string
-  default     = "datadoghq.com"
+  default     = "ap1.datadoghq.com"
 }
 
 variable "datadog_iam_role_name" {
