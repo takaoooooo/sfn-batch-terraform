@@ -51,7 +51,9 @@ data "aws_caller_identity" "current" {}
 resource "datadog_integration_aws_external_id" "this" {}
 
 # Datadog が必要とする IAM 権限(Datadog側が管理する最新の一覧)
-data "datadog_integration_aws_iam_permissions" "this" {}
+# 全権限(datadog_integration_aws_iam_permissions)はIAMポリシーの上限6144文字を超えるため、
+# リソース収集(CSPM)用を除いた standard のみを使用する
+data "datadog_integration_aws_iam_permissions_standard" "this" {}
 
 resource "aws_iam_policy" "datadog_integration" {
   name = "${var.datadog_iam_role_name}Policy"
@@ -59,7 +61,7 @@ resource "aws_iam_policy" "datadog_integration" {
     Version = "2012-10-17"
     Statement = [{
       Effect   = "Allow"
-      Action   = data.datadog_integration_aws_iam_permissions.this.iam_permissions
+      Action   = data.datadog_integration_aws_iam_permissions_standard.this.iam_permissions
       Resource = "*"
     }]
   })
